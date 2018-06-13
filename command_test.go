@@ -837,7 +837,7 @@ func TestHelpExecutedOnNonRunnableChild(t *testing.T) {
 
 	output, err := executeCommand(rootCmd, "child")
 	if err != nil {
-		t.Errorf("Unexpected error: %v", err)
+		t.Errorf("Unexpected error: ", err)
 	}
 
 	checkStringContains(t, output, childCmd.Long)
@@ -869,7 +869,7 @@ func TestVersionTemplate(t *testing.T) {
 func TestErrorTemplate(t *testing.T) {
 	rootCmd := &Command{Use: "root", Run: emptyRun}
 	rootCmd.AddCommand(&Command{Use: "child", Run: emptyRun})
-	rootCmd.SetErrorTemplate("customized error: %s")
+	rootCmd.SetErrorTemplate(`customized error: {{ . }}`)
 
 	output, _ := executeCommand(rootCmd, "unknown")
 
