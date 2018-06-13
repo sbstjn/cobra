@@ -450,7 +450,7 @@ func (c *Command) ErrorTemplate() string {
 	if c.HasParent() {
 		return c.parent.ErrorTemplate()
 	}
-	return "Error: {{ . }}\n"
+	return "Error: {{ .Error }}\n"
 }
 
 // VersionTemplate return version template for the command.
@@ -857,7 +857,7 @@ func (c *Command) ExecuteC() (cmd *Command, err error) {
 			c = cmd
 		}
 		if !c.SilenceErrors {
-			tmpl(c.OutOrStdout(), c.ErrorTemplate(), err.Error())
+			tmpl(c.OutOrStdout(), c.ErrorTemplate(), err)
 			c.Printf("Run '%v --help' for usage.\n", c.CommandPath())
 		}
 		return c, err
@@ -880,7 +880,7 @@ func (c *Command) ExecuteC() (cmd *Command, err error) {
 		// If root command has SilentErrors flagged,
 		// all subcommands should respect it
 		if !cmd.SilenceErrors && !c.SilenceErrors {
-			tmpl(c.OutOrStdout(), c.ErrorTemplate(), err.Error())
+			tmpl(c.OutOrStdout(), c.ErrorTemplate(), err)
 		}
 
 		// If root command has SilentUsage flagged,
